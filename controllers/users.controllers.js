@@ -4,6 +4,7 @@ import { connection } from '../Database/mysql.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { config } from 'dotenv'
+import { findProduct } from './products.controllers.js'
 config()
 
 export function validateUser (object) {
@@ -52,4 +53,11 @@ export const login = async function (req, res) {
       }
     })
   } catch { res.send('user not found') }
+}
+
+export async function createList (req, res) {
+  const data = req.body
+  const dataProducto = await findProduct(data)
+  console.log(dataProducto)
+  res.send(dataProducto)
 }

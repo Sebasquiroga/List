@@ -1,9 +1,12 @@
+import { config } from 'dotenv'
 import { createPool } from 'mysql2/promise'
+config()
+console.log(process.env.PASSWORDDB)
 
 export const connection = createPool({
-  host: 'localhost',
+  host: process.env.HOST_DB,
   user: 'root',
-  port: '3306',
+  port: process.env.PORTDB,
   database: 'world',
-  password: 'Squirog@16'
+  password: process.env.PASSWORDDB
 })

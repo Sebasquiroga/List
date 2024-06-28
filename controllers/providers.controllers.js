@@ -5,6 +5,7 @@ export async function findProviders (req, res) {
   const provider = req.body.provider
   await connection.query(`SELECT provider FROM list.providers WHERE provider LIKE "%${provider}%" `).then((datos) => {
     console.log(datos[0][0])
+    return datos[0][0]
   })
 }
 
@@ -17,4 +18,8 @@ export async function createProvider (req, res) {
       res.send('user create sucefull')
     } catch (err) { res.send(err) }
   }
+}
+
+export async function updateProduct (req, res) {
+
 }

@@ -17,3 +17,10 @@ export const providerSchema = z.object({
   address: z.string(),
   local: z.string()
 })
+
+export const productsSchema = z.object({
+  product_name: z.string(),
+  formato: z.string(),
+  formato_de_venta: z.string()
+}
+)

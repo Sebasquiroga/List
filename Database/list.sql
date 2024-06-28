@@ -33,3 +33,14 @@ CREATE TABLE `list`.`providers` (
   UNIQUE INDEX `DIT_UNIQUE` (`DIT` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+
+CREATE TABLE `list`.`products` (
+  `idProducts` INT NOT NULL AUTO_INCREMENT,
+  `product_name` VARCHAR(45) NOT NULL,
+  `formato` VARCHAR(45) NULL,
+  `Formato_de_venta` VARCHAR(45) NULL DEFAULT 'Libra',
+  PRIMARY KEY (`idProducts`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
