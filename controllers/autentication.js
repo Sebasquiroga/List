@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import { config } from 'dotenv'
 config()
 
@@ -18,4 +19,13 @@ export const autenticate = (req, res, next) => {
 export const funTest = (req, res) => {
   console.log('test')
   res.send('Hola desde Fun Test')
+}
+
+export const hased = async (value) => {
+  const salt = 4
+  return await bcrypt.hashSync(value, salt)
+}
+
+export const isValidPassword = async (password, hashDB) => {
+  return await bcrypt.compareSync(password, hashDB)
 }
