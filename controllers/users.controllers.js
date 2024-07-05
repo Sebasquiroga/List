@@ -58,7 +58,7 @@ export const login = async (req, res) => {
   if (validate == true) {
     const token = createToken(user)
     res.cookie('access_token', token, { httpOnly: true, secure: false }).send('login exitoso')
- nvi } else { res.send('password incorrect, please try again') }
+  } else { res.send('password incorrect, please try again') }
 }
 
 export async function createList (req, res) {
