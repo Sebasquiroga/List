@@ -8,14 +8,24 @@ import bcrypt from 'bcrypt'
 
 config()
 
-export function validateUser (object) {
+/* Middleware's para los users  */
+
+function validateUser (object) {
   return userSchema.safeParse(object)
 }
 
 function createToken (user) {
-  const tokenGen = jwt.sign({ usename: user.username, rol: user.rol }, process.env.SECRET_KEY, { expiresIn: '1h' })
+  console.log(user)
+  const tokenGen = jwt.sign({ usename: user.username, Rol: user.Rol, Tienda: user.Tienda }, process.env.SECRET_KEY, { expiresIn: '1h' })
   return tokenGen
 }
+
+export function verifyToken (req, res, next) {
+  const token = req.cookie
+  if (!token) { res.send('access not autoriced ').status(401) }
+}
+
+/* Funciones para usrs  */
 
 export const createUser = async function (req, res) {
   const resultado = validateUser(req.body) /* funcion para validar datos recibidos del req.body */
@@ -57,8 +67,14 @@ export const login = async (req, res) => {
   const validate = await bcrypt.compare(isValid.data.password, passwordCrypted)
   if (validate == true) {
     const token = createToken(user)
+    console.log(user)
     res.cookie('access_token', token, { httpOnly: true, secure: false }).send('login exitoso')
   } else { res.send('password incorrect, please try again') }
+}
+
+export const logout = (req, res) => {
+  res.clearCookie('access_token').json({ messege: 'logout succesfull' })
+  console.log('logout')
 }
 
 export async function createList (req, res) {

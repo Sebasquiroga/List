@@ -1,5 +1,6 @@
 import express from 'express'
 import session from 'express-session'
+import cors from 'cors'
 import { userRouter } from './routes/users-router.js'
 import { config } from 'dotenv'
 import cookieParser from 'cookie-parser'
@@ -10,6 +11,7 @@ const PORT = process.env.PORT ?? 3000
 const app = express()
 
 // Middelware's
+app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 app.use(session({
