@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createList, createUser, deleteUser, findUSer, login, updateUser } from '../controllers/users.controllers.js'
+import { createList, createUser, deleteUser, findUSer, login, logout, updateUser, verifyToken } from '../controllers/users.controllers.js'
 export const userRouter = Router()
 
 userRouter.get('/users', (req, res) => {
@@ -9,6 +9,8 @@ userRouter.get('/users', (req, res) => {
 userRouter.post('/createuser', createUser)
 userRouter.delete('/deleteuser/:id', deleteUser)
 userRouter.patch('/updateuser/:id', updateUser)
-userRouter.post('/finduser', findUSer)
+userRouter.post('/finduser', verifyToken, findUSer)
 userRouter.post('/login', login)
+userRouter.get('/logout', logout)
 userRouter.post('/list', createList)
+userRouter.get('/verificado', verifyToken)

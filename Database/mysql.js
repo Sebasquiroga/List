@@ -4,8 +4,8 @@ config()
 console.log(process.env.PASSWORDDB)
 
 export const connection = createPool({
-  host: 'databasesebasquiroga.ctcyu4mayy1f.us-east-2.rds.amazonaws.com',
-  user: 'admin',
+  host: '192.168.0.5',
+  user: 'sebasquiroga',
   port: '3306',
   database: 'list',
   password: 'Squiroga16'
