@@ -3,11 +3,10 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { userRouter } from './routes/users-router.js'
-import { config } from 'dotenv'
-
 import { shopRoutes } from './routes/shop.routes.js'
 import { providerRoutes } from './routes/providers.routes.js'
-config()
+process.loadEnvFile('.env')
+
 const PORT = process.env.PORT ?? 3000
 const app = express()
 

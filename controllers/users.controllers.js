@@ -3,7 +3,6 @@ import { userSchema } from '../Schemas/validateInputs.js'
 import { connection } from '../Database/mysql.js'
 import { config } from 'dotenv'
 import jwt from 'jsonwebtoken'
-import { findProduct } from './products.controllers.js'
 import bcrypt from 'bcrypt'
 
 config()
@@ -31,9 +30,12 @@ export async function verifyToken (req, res, next) {
   }
 }
 
+export async function test (req, res) {
+}
+
 /* Funciones para users  */
 
-export const createUser = async function (req, res) {
+export async function createUser (req, res) {
   const resultado = validateUser(req.body) /* funcion para validar datos recibidos del req.body */
   if (resultado.success == false) { res.send('error en los datos').status(402) } else {
     const password = await bcrypt.hash(req.body.password, 8)
@@ -44,21 +46,18 @@ export const createUser = async function (req, res) {
   }
 }
 
-export const deleteUser = async function (data) {
-
+export const deleteUser = async function (req, res) {
+  const user = req.params.id
+  await connection.query(`DELETE FROM list.users WHERE username = '${user}'`).then(data => res.status(202).send(data[0])).catch(err => res.status(406).send(err))
 }
 
-export const updateUser = async function (data) {
-
+export const updateUser = async function (req, res) {
+  const userData = req.query
+  await connection.query(`UPDATE list.users SET IdTienda = '${userData.idTienda}' WHERE username = '${userData.username}'`).then(data => res.send(data)).catch(err => res.send(err))
 }
 
-export const findUSer = async function (req, res) {
-  const validacion = validateUser(req.body)
-  if (validacion) {
-    await connection.query('SELECT BIN_TO_UUID(id), username FROM list.users WHERE username = ?', [req.body.username]).then((datos) => {
-      if (datos[0][0]) { res.send(datos[0][0].length) } else { res.send('no no no ') }
-    }).catch((err) => { res.send(err) })
-  } else { res.status(401).send('user not found') }
+export const findUser = async function (object) {
+  await connection.query('SELECT BIN_TO_UUID(id), username FROM list.users WHERE username = ?', [object.username]).then(data => { return data }).catch(err => { return err })
 }
 
 export const login = async (req, res) => {
@@ -81,11 +80,4 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie('access_token').json({ messege: 'logout succesfull' })
   console.log('logout')
-}
-
-export async function createList (req, res) {
-  const data = req.body
-  const dataProducto = await findProduct(data)
-  console.log(dataProducto)
-  res.send(dataProducto)
 }
