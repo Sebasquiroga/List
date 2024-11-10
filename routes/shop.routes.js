@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { config } from 'dotenv'
-import { autenticate, funTest } from '../controllers/autentication.js'
+import { createShop, deleteShop, findAllShop, updateShop } from '../controllers/shops.controllers.js'
 export const shopRoutes = Router()
-config()
 
-shopRoutes.get('/shop', autenticate, funTest)
+shopRoutes.get('/', findAllShop)
+shopRoutes.post('/create', createShop)
+shopRoutes.patch('/update/:shopname', updateShop)
+shopRoutes.delete('/delete/:shopname', deleteShop)

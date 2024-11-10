@@ -1,19 +1,16 @@
-import { config } from 'dotenv'
 import { createPool } from 'mysql2/promise'
-config()
-console.log(process.env.PASSWORDDB)
+process.loadEnvFile()
 
 export const connection = createPool({
-  host: '192.168.0.5',
-  user: 'sebasquiroga',
-  port: '3306',
+  host: process.env.HOST_DB,
+  user: process.env.USERDBMYSQL,
+  port: process.env.PORTDB,
   database: 'list',
-  password: 'Squiroga16'
+  password: process.env.PASSWORDDB
 
 })
 
 async function test () {
-  try { await connection.query('SELECT 1 + 1').then((datos) => console.log(datos)) } catch (err) { console.log(err) }
+  await connection.query('SELECT 1 + 1').then(result => console.log('conexion a base de datos MYSQL exitosa')).catch(err => console.log(err))
 }
-
 test()
