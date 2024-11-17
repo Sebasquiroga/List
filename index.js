@@ -5,6 +5,7 @@ import cors from 'cors'
 import { userRouter } from './routes/users-router.js'
 import { shopRoutes } from './routes/shop.routes.js'
 import { providerRoutes } from './routes/providers.routes.js'
+import { productRoutes } from './routes/products.routes.js'
 import { verifyToken } from './controllers/users.controllers.js'
 process.loadEnvFile('.env')
 
@@ -34,7 +35,8 @@ app.use(session({
 // Routes from api uses
 app.use('/api', userRouter)
 app.use('/api/shop', verifyToken, shopRoutes)
-app.use('/api', providerRoutes)
+app.use('/api/providers', verifyToken, providerRoutes)
+app.use('/api/product', verifyToken, productRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server listen in port ${PORT}`)

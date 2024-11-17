@@ -14,7 +14,8 @@ function validateUser (object) {
 }
 
 function createToken (user) {
-  const tokenGen = jwt.sign({ usename: user.username, Rol: user.Rol, Tienda: user.Tienda }, process.env.SECRET_KEY, { expiresIn: '1m' })
+  console.log(user)
+  const tokenGen = jwt.sign({ usename: user.username, Tienda: user.idTienda }, process.env.SECRET_KEY, { expiresIn: '1h' })
   return tokenGen
 }
 
@@ -60,7 +61,7 @@ export const findUser = async function (object) {
   await connection.query('SELECT BIN_TO_UUID(id), username FROM list.users WHERE username = ?', [object.username]).then(data => { return data }).catch(err => { return err })
 }
 
-export const login = async (req, res) => {
+export const login3 = async (req, res) => {
   const isValid = validateUser(req.body).success
   const password = req.body.password
   if (isValid) {
@@ -80,4 +81,19 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie('access_token').json({ messege: 'logout succesfull' })
   console.log('logout')
+}
+
+export const login = async (req, res) => {
+  const isValid = validateUser(req.body).success
+  if (isValid) {
+    const user = await connection.query(`SELECT  username, password ,idTienda FROM list.users WHERE username = '${req.body.username}'`).then(([rows]) => { return rows[0] }).catch(err => res.send(err))
+    if (!user) { res.status(404).json({ messege: 'user not found' }) } else {
+      await bcrypt.compare(req.body.password, user.password).then(compare => {
+        if (compare == true) {
+          const token = createToken(user)
+          res.status(201).cookie('access_token', token, { maxAge: 35000 * 60, httpOnly: false, secure: false, sameSite: 'lax' }).json({ messege: 'password correct' })
+        } else { res.status(403).json({ messege: 'password incorrect, try again' }) }
+      }).catch((err) => res.json({ error: err }))
+    }
+  } else { res.status(502).json({ messege: 'error en formato de texto' }) }
 }
