@@ -84,6 +84,7 @@ export const logout = (req, res) => {
 }
 
 export const login = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
   const isValid = validateUser(req.body).success
   if (isValid) {
     const user = await connection.query(`SELECT  username, password ,idTienda FROM list.users WHERE username = '${req.body.username}'`).then(([rows]) => { return rows[0] }).catch(err => res.send(err))

@@ -14,7 +14,7 @@ const app = express()
 
 // eslint-disable-next-line no-unused-vars
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: '*',
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization'
@@ -23,7 +23,7 @@ const corsOptions = {
 // Middelware's
 app.use(cookieParser())
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions))
 
 app.use(session({
   secret: 'alena',
@@ -35,7 +35,7 @@ app.use(session({
 // Routes from api uses
 app.use('/api', userRouter)
 app.use('/api/shop', verifyToken, shopRoutes)
-app.use('/api/providers', verifyToken, providerRoutes)
+app.use('/api/providers', providerRoutes)
 app.use('/api/product', verifyToken, productRoutes)
 
 app.listen(PORT, () => {
