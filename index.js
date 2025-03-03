@@ -7,14 +7,13 @@ import { shopRoutes } from './routes/shop.routes.js'
 import { providerRoutes } from './routes/providers.routes.js'
 import { productRoutes } from './routes/products.routes.js'
 import { verifyToken } from './controllers/users.controllers.js'
-process.loadEnvFile('.env')
+process.loadEnvFile()
 
 const PORT = process.env.PORT ?? 3000
 const app = express()
 
-// eslint-disable-next-line no-unused-vars
 const corsOptions = {
-  origin: '*',
+  origin: 'http://127.0.0.1:5500',
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization'
@@ -29,7 +28,7 @@ app.use(session({
   secret: 'alena',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false }
 }))
 
 // Routes from api uses
