@@ -1,6 +1,6 @@
 import { createPool } from 'mysql2/promise'
 process.loadEnvFile()
-console.log(process.env.PORT)
+// console.log(process.env.PORT)
 export const connection = createPool({
   host: process.env.HOST_DB,
   user: process.env.USERDBMYSQL,

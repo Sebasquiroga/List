@@ -35,7 +35,7 @@ app.use(session({
 app.use('/api', userRouter)
 app.use('/api/shop', verifyToken, shopRoutes)
 app.use('/api/providers', providerRoutes)
-app.use('/api/product', verifyToken, productRoutes)
+app.use('/api/product', productRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server listen in port ${PORT}`)

@@ -78,7 +78,7 @@ export async function login (req, res) {
 }
 
 export function accesstoken (req, res, string) {
-  res.status(200).cookie('access_token', string, { maxAge: 35000 * 60, httpOnly: false, secure: false, sameSite: 'lax' }).status(201).json({ messege: 'password correct' })
+  res.status(200).cookie('access_token', string, { maxAge: 35000 * 60, httpOnly: false, secure: true, sameSite: 'None' }).status(201).json({ messege: 'password correct' })
 }
 
 export async function findUsers (string) {

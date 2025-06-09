@@ -2,8 +2,10 @@ import { connection } from '../Database/mysql.js'
 
 export async function createProduct (req, res) {
   const data = req.body
-  connection.query('INSERT INTO `list`.`products` (`product_name`, `formato`, `formato-de-venta`) VALUES (?,?,?,,?)', [data.product_name, data.formato, data.formato_de_venta]).then(
-    res.send('product create sucefull').status(201))
+  connection.query('INSERT INTO `list`.`products` (`product`, `Formato de compra`, `Formato de venta`) VALUES (?,?,?)', [data.product_name, data.formato, data.formato_de_venta]).then(
+    res.send('product create sucefull').status(201)).catch(err => {
+    res.send(err)
+  })
 }
 
 export async function findProduct (req, res) {
