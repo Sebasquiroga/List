@@ -57,8 +57,9 @@ export const updateUser = async function (req, res) {
   await connection.query(`UPDATE list.users SET IdTienda = '${userData.idTienda}' WHERE username = '${userData.username}'`).then(data => res.send(data)).catch(err => res.send(err))
 }
 
-export const findUser = async function (object) {
-  await connection.query('SELECT BIN_TO_UUID(id), username FROM list.users WHERE username = ?', [object.username]).then(data => { return data }).catch(err => { return err })
+export const findUser = async function (req, res) {
+  const string = req.body.username
+  await connection.query(`SELECT  username, password ,idTienda FROM list.users WHERE username LIKE '${string}%'`).then(([rows]) => { if (rows.length > 0) { res.status(201).send(rows) } else { res.status(404).send('user not found') } }).catch(err => { res.status(404).send(err) })
 }
 
 export const logout = (req, res) => {
@@ -67,14 +68,21 @@ export const logout = (req, res) => {
 }
 
 export async function login (req, res) {
-  const isValid = validateUser(req.body).success
-  if (isValid) {
-    await findUsers(req.body.username).then(user => {
-      compare(req.body.password, user.password).then(compare => {
-        if (compare) { createToken(user).then(data => accesstoken(req, res, data)) } else { res.status(403).json({ messege: 'password incorrect, try again' }) }
-      }).catch(err => { console.log(err) })
-    }).catch(err => { res.status(404).send(err) })
-  } else { res.status(502).json({ messege: 'error en formato de texto' }) }
+  const username = req.body.username
+  const password = req.body.password
+  await findUsers(username).then(data => {
+    compare(password, data[0].password)
+      .then(respuesta => {
+        // eslint-disable-next-line brace-style
+        if (respuesta) { createToken(data[0]).then(token => {
+          res.status(201).cookie('access_token', token, { maxAge: 35000 * 60, httpOnly: false, secure: false, sameSite: 'lax' }).json({ messege: 'password correct' })
+        })
+        } else { res.status(403).json({ messege: 'password incorrect, try again' }) }
+      }).catch(err => {
+        console.log(err)
+        res.status(500).json({ messege: 'error comparing password' })
+      })
+  })
 }
 
 export function accesstoken (req, res, string) {
@@ -83,7 +91,7 @@ export function accesstoken (req, res, string) {
 
 export async function findUsers (string) {
   let user = {}
-  await connection.query(`SELECT  username, password ,idTienda FROM list.users WHERE username = '${string}'`).then(([rows]) => { user = rows[0] }).catch(err => (err))
+  await connection.query(`SELECT  username, password ,idTienda FROM list.users WHERE username LIKE '${string}'`).then(([rows]) => { user = rows }).catch(err => (err))
   return user
 }
 
