@@ -3,7 +3,7 @@ import { createUser, deleteUser, findUser, login, logout, updateUser, verifyToke
 export const userRouter = Router()
 
 userRouter.post('/create', createUser)
-userRouter.delete('/delete/:id', deleteUser)
+userRouter.delete('/delete', deleteUser)
 userRouter.post('/uniqueuser', findUser)
 userRouter.patch('/update', verifyToken, updateUser)
 userRouter.post('/finduser', findUser)

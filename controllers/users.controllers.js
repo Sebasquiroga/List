@@ -1,11 +1,8 @@
 /* eslint-disable eqeqeq */
 import { userSchema } from '../Schemas/validateInputs.js'
 import { connection } from '../Database/mysql.js'
-import { config } from 'dotenv'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-
-config()
 
 /* Middleware's para los users  */
 
@@ -48,8 +45,18 @@ export async function createUser (req, res) {
 }
 
 export const deleteUser = async function (req, res) {
-  const user = req.params.id
-  await connection.query(`DELETE FROM list.users WHERE username = '${user}'`).then(data => res.status(202).send(data[0])).catch(err => res.status(406).send(err))
+  const user = req.body.username
+  if (!user) { res.status(400).send('username is required') }
+  await connection.query(`DELETE FROM list.users WHERE username = '${user}'`)
+    .then((data) => {
+      console.log(data)
+      if (data[0].affectedRows > 0) {
+        res.status(202).send('user deleted succesfully')
+      } else {
+        res.status(404).send('user not found')
+      }
+    })
+    .catch(err => res.status(406).send(err))
 }
 
 export const updateUser = async function (req, res) {
@@ -64,10 +71,10 @@ export const findUser = async function (req, res) {
 
 export const logout = (req, res) => {
   res.clearCookie('access_token').json({ messege: 'logout succesfull' })
-  console.log('logout')
 }
 
 export async function login (req, res) {
+  /* Importante gestionar la verificacion de los datos enviados al servidor con Verificate */
   const username = req.body.username
   const password = req.body.password
   await findUsers(username).then(data => {
@@ -75,7 +82,7 @@ export async function login (req, res) {
       .then(respuesta => {
         // eslint-disable-next-line brace-style
         if (respuesta) { createToken(data[0]).then(token => {
-          res.status(201).cookie('access_token', token, { maxAge: 35000 * 60, httpOnly: false, secure: false, sameSite: 'lax' }).json({ messege: 'password correct' })
+          res.cookie('access_token', token, { maxAge: 35000 * 60, httpOnly: false, secure: false, sameSite: 'lax' }).status(201).json({ messege: 'password correct' })
         })
         } else { res.status(403).json({ messege: 'password incorrect, try again' }) }
       }).catch(err => {
