@@ -27,3 +27,4 @@ $RECYCLE.BIN/
 *.lnk
 # Local env files   
 .env
+node_modules/.package-lock.json

@@ -6,7 +6,6 @@ import { userRouter } from './routes/users-router.js'
 import { shopRoutes } from './routes/shop.routes.js'
 import { providerRoutes } from './routes/providers.routes.js'
 import { productRoutes } from './routes/products.routes.js'
-import { verifyToken } from './controllers/users.controllers.js'
 process.loadEnvFile()
 
 const PORT = process.env.PORT ?? 3000
@@ -33,7 +32,7 @@ app.use(session({
 
 // Routes from api uses
 app.use('/api', userRouter)
-app.use('/api/shop', verifyToken, shopRoutes)
+app.use('/api/shop', shopRoutes)
 app.use('/api/providers', providerRoutes)
 app.use('/api/product', productRoutes)
 
