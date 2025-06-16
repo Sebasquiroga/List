@@ -1,6 +1,3 @@
 import mongoose from 'mongoose'
-process.loadEnvFile('../.env')
 
-console.log(process.env.URIMONGO)
-
-export const mongoconection = await mongoose.connect(process.env.URIMONGO).then(() => console.log('Conected succesful to MongoDB')).catch(err => console.log(err))
+export const mongoconection = await mongoose.connect('mongodb://localhost:27017/list').then((data) => console.log('conection sucessfull')).catch(err => console.log(err))

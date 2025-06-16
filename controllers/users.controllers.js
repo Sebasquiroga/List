@@ -49,7 +49,6 @@ export const deleteUser = async function (req, res) {
   if (!user) { res.status(400).send('username is required') }
   await connection.query(`DELETE FROM list.users WHERE username = '${user}'`)
     .then((data) => {
-      console.log(data)
       if (data[0].affectedRows > 0) {
         res.status(202).send('user deleted succesfully')
       } else {

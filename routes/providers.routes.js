@@ -3,6 +3,6 @@ import { createProvider, findProviders } from '../controllers/providers.controll
 export const providerRoutes = Router()
 
 providerRoutes.post('/provider', findProviders)
-providerRoutes.post('/provider/create', createProvider)
-providerRoutes.patch('/provider/update/:id')
-providerRoutes.delete('/provider/delete/:id')
+providerRoutes.post('/create', createProvider)
+providerRoutes.patch('/update')
+providerRoutes.delete('/delete/:id')

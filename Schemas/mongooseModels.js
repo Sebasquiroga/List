@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 // eslint-disable-next-line no-unused-vars
-import { mongoconection } from '../Database/mongo.js'
+import { mongoconection } from '../Database/mongo.js' /* importacion para iniciar la conexion */
 
 const schemaLista = new Schema({
   idTienda: Number,
@@ -15,14 +15,13 @@ const schemaLista = new Schema({
   estadoLista: { type: Number, default: 1 }
 })
 
-const ModelLista = model('listillo', schemaLista)
+const ModelLista = model('List', schemaLista)
 
 async function nueve () {
   const modelo = ModelLista({
     idTienda: 11,
     listaReal: []
   })
-  console.log(modelo)
   await modelo.save().then(data => console.log(data)).catch(err => console.log(err))
 }
 

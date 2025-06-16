@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { createProduct, deleteProduct, findProduct } from '../controllers/products.controllers.js'
+import { createProduct, deleteProduct, findProduct, updateProduct } from '../controllers/products.controllers.js'
 export const productRoutes = Router()
 
-productRoutes.get('/', findProduct)
+productRoutes.post('/findproduct', findProduct)
 productRoutes.post('/create', createProduct)
-productRoutes.delete('/delete/:product', deleteProduct)
+productRoutes.delete('/delete', deleteProduct)
+productRoutes.patch('/update', updateProduct)
