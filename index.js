@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
@@ -6,6 +7,8 @@ import { userRouter } from './routes/users-router.js'
 import { shopRoutes } from './routes/shop.routes.js'
 import { providerRoutes } from './routes/providers.routes.js'
 import { productRoutes } from './routes/products.routes.js'
+import { listRoutes } from './routes/list.routes.js'
+import { mongoconection } from './Database/mongo.js'
 process.loadEnvFile()
 
 const PORT = process.env.PORT ?? 3000
@@ -35,6 +38,7 @@ app.use('/api', userRouter)
 app.use('/api/shop', shopRoutes)
 app.use('/api/providers', providerRoutes)
 app.use('/api/product', productRoutes)
+app.use('/api/list', listRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server listen in port ${PORT}`)

@@ -18,6 +18,6 @@ export async function createProvider (req, res) {
     }).catch(err => res.status(406).send(err))
 }
 
-export async function updateviders (req, res) {
+export async function updateprovider (req, res) {
 
 }
